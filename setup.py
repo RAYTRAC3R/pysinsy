@@ -19,10 +19,20 @@ sinsy_install_prefix = os.environ.get(
 sinsy_include_top = join(sinsy_install_prefix, "include")
 sinsy_library_path = join(sinsy_install_prefix, "lib")
 
-lib_candidates = list(filter(lambda l: l.startswith("libsinsy."),
-                             os.listdir(join(sinsy_library_path))))
-if len(lib_candidates) == 0:
+hts_engine_api_install_prefix = os.environ.get(
+    "HTS_ENGINE_API_INSTALL_PREFIX", "/usr/local/")
+hts_engine_api_library_path=join(hts_engine_api_install_prefix, "lib")
+
+sinsy_lib_candidates = list(filter(lambda l: l.startswith("sinsy."),
+                                   os.listdir(join(sinsy_library_path))))
+hts_engine_api_lib_candidates = list(filter(lambda l: l.startswith("sinsy."),
+                                            os.listdir(join(hts_engine_api_library_path))))
+
+if len(sinsy_lib_candidates) == 0:
     raise OSError("sinsy library cannot be found")
+
+if len(hts_engine_api_lib_candidates) == 0:
+    raise OSError("HTS_engine library cannot be found")
 
 min_cython_ver = '0.21.0'
 try:
@@ -58,8 +68,8 @@ ext_modules = cythonize(
         ],
         include_dirs=[np.get_include(),
                       join(sinsy_include_top)],
-        library_dirs=[sinsy_library_path],
-        libraries=["sinsy"],
+        library_dirs=[sinsy_library_path, hts_engine_api_library_path],
+        libraries=["sinsy", "hts_engine_API"],
         extra_compile_args=[],
         extra_link_args=[],
         language="c++")],

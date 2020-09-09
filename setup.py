@@ -25,7 +25,7 @@ hts_engine_api_library_path=join(hts_engine_api_install_prefix, "lib")
 
 sinsy_lib_candidates = list(filter(lambda l: l.startswith("sinsy."),
                                    os.listdir(join(sinsy_library_path))))
-hts_engine_api_lib_candidates = list(filter(lambda l: l.startswith("sinsy."),
+hts_engine_api_lib_candidates = list(filter(lambda l: l.startswith("hts_engine_API."),
                                             os.listdir(join(hts_engine_api_library_path))))
 
 if len(sinsy_lib_candidates) == 0:
